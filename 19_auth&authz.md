@@ -68,6 +68,25 @@ GET /api/v1/namespaces/default/pods
 * `/api` → core group
 * `/apis` → named groups
 
+*`/api` → Core group / Legacy*
+- *Original resources*: Holds foundational k8s objects like `pods`, `services`, `nodes`, `namespaces`
+- *Empty group name*: Technical group is `""`, accessed via path `/api/v1`
+- *Legacy design*: Exists for backwards compatibility with early k8s versions
+
+```bash
+kubectl get --raw /api/v1 | jq .resources[].name          # core resources
+```
+
+*`/apis` → Named groups / Extensions*
+- *Newer resources*: Holds all extension resources like `deployments`, `jobs`, `ingress`, `roles`, `crds`
+- *Explicit group names*: Uses clear names like `apps`, `batch`, `networking.k8s.io` at `/apis/<group>/<version>`
+- *Extensible design*: Added to support new features without breaking the core API
+
+```bash
+kubectl get --raw /apis/apps/v1 | jq .resources[].name    # apps group resources
+```
+
+* So /api = OG resources, /apis = everything else that came after.
 ---
 
 ## ⚙️ Non-Resource Endpoints
