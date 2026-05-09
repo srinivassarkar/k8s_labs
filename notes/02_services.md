@@ -1,5 +1,5 @@
 # Kubernetes Services — ClusterIP, NodePort, LoadBalancer, Headless & Ingress
-### The Complete Mental Model — Interviews · CKA · Production
+
 
 ---
 

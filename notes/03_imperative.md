@@ -1,7 +1,4 @@
-# Kubernetes Services & Deployments — CKA + Senior Interview Master Guide
-
-
-
+# Kubernetes Services & Deployments 
 ---
 
 ## 0. First Principles

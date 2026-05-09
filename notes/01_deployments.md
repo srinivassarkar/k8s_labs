@@ -1,5 +1,4 @@
 # Kubernetes Deployments — Rolling Updates, Rollbacks & Lifecycle Management
-### The Complete Mental Model — Interviews · CKA · Production
 
 ---
 

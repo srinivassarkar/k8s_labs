@@ -1,4 +1,4 @@
-# Kubernetes Namespaces — CKA + Senior Interview Master Guide
+# Kubernetes Namespaces 
 ---
 
 ## 0. First Principles
