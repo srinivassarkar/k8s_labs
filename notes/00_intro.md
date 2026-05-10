@@ -1,5 +1,5 @@
 # Kubernetes Architecture — Core, Extensions & the Plugin Model
-### The Complete Mental Model — Interviews · CKA · Production
+
 
 ---
 
