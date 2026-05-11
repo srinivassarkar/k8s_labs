@@ -1,8 +1,4 @@
 # ☸️ Kubernetes Study Guide — Kind Clusters, Contexts & Workload Controllers
-### *CKA + Senior Interview Prep | Day 08 + Day 10*
-
-> **How to use this doc:** Read top to bottom once. Then use sections 7–10 as your daily flashcard loop. Every section flows into the next — this is a story, not a dump.
-
 ---
 
 ## 0. First Principles 🧠
