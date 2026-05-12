@@ -139,7 +139,8 @@ kubectl apply -f deployment.yaml
 ┌─────────────────────────────────────────┐
 │  API Server                             │
 │  1. Authenticates + Authorizes request  │
-│  2. Admission controllers: mutates and Validates against full K8s schema   │
+│  2. Admission controllers: mutates and validates
+ against full K8s schema   │
 │  3. Writes Deployment → etcd            │
 │  4. Returns "deployment created"        │
 └─────────────────┬───────────────────────┘
