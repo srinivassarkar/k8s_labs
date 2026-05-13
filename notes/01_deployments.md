@@ -311,7 +311,7 @@ current-context: dev-context
 ## 5. Production Flow 🏗️
 *Real-world patterns and architecture decisions*
 
-### Multi-cluster context management (the Varun pattern)
+### Multi-cluster context management
 
 A single engineer managing dev/staging/prod from one laptop:
 
