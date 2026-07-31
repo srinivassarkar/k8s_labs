@@ -1,4 +1,4 @@
-# KIND Kubernetes Lab Setup (Follow Along)
+# KIND Kubernetes Lab Setup
 
 ## 1. Install KIND
 
@@ -8,7 +8,6 @@ curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
 chmod +x ./kind
 
 sudo mv ./kind /usr/local/bin/kind
-
 ```
 
 Verify:
@@ -43,7 +42,33 @@ kind create cluster --config kind-cluster.yaml --name k8s-labs
 
 ---
 
-## 3. Verify Cluster
+## 3. Install kubectl
+
+If `kubectl` is not installed, you'll see:
+
+```text
+-bash: kubectl: command not found
+```
+
+Install the latest stable version:
+
+```bash
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+chmod +x kubectl
+
+sudo mv kubectl /usr/local/bin/
+```
+
+Verify installation:
+
+```bash
+kubectl version --client
+```
+
+---
+
+## 4. Verify Cluster
 
 Check cluster access:
 
@@ -68,7 +93,7 @@ k8s-labs-worker2            Ready
 
 ---
 
-## 4. Fix kubeconfig (If `sudo` Was Used)
+## 5. Fix kubeconfig (If `sudo` Was Used)
 
 KIND may write kubeconfig to root's home.
 
@@ -100,7 +125,7 @@ You should now use `kubectl` without `sudo`.
 
 ---
 
-## 5. Useful Verification Commands
+## 6. Useful Verification Commands
 
 Current context:
 
@@ -126,10 +151,21 @@ System pods:
 kubectl get pods -A
 ```
 
----
+Docker containers (Kind nodes):
+
+```bash
+docker ps
+```
+
+List KIND clusters:
+
+```bash
+kind get clusters
+```
+
 ---
 
-## 6. Lab Environment Ready
+## 7. Lab Environment Ready
 
 Check:
 
@@ -137,16 +173,33 @@ Check:
 kubectl get nodes
 kubectl get pods -A
 ```
+
+If all nodes are **Ready** and all system pods are **Running**, your Kubernetes lab environment is ready for:
+
+- Pods
+- Deployments
+- ReplicaSets
+- Services
+- ConfigMaps
+- Secrets
+- Volumes
+- Networking
+- Ingress
+- Troubleshooting
+- Scheduling
+- Resource Limits
+- RBAC
+- Stateful Workloads
+
+🚀 Happy Labbing!
+
 ---
 
-If all nodes are `Ready` and system pods are `Running`, your Kubernetes lab environment is ready for Pod, Deployment, Service, ConfigMap, Secret, Troubleshooting, and Networking labs. 🚀
+# 🧹 Clean Up
 
----
+## 8. Delete Cluster
 
-## ---CLEAN UP---
-## 7. Delete Cluster
-
-Delete specific cluster:
+Delete the specific cluster:
 
 ```bash
 kind delete cluster --name k8s-labs
@@ -163,6 +216,3 @@ Delete all KIND clusters:
 ```bash
 kind get clusters | xargs -I{} kind delete cluster --name {}
 ```
-
-
-
