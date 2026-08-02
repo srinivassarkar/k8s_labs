@@ -116,6 +116,13 @@ Verify:
 kubectl get pod bad-image-pod -n lab01
 # Should show Running
 ```
+### Possible Qs to Ask yourself : 
+1. Is the image name/tag correct?
+2. Is the registry reachable?
+3. Is authentication required?
+4. Is the CRI healthy?
+5. Is the node healthy (disk, network, resources)?
+6. Is imagePullPolicy preventing the pull?
 
 ### Prod Wisdom
 
