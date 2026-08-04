@@ -227,9 +227,21 @@ kubectl get endpoints api-svc -n lab03
 Notice: Endpoints ARE populated — but with port `8080`. The selector matched correctly. The pods are running. But:
 
 ```bash
-kubectl run curl-test --image=curlimages/curl:latest --rm -it --restart=Never \
-  -n lab03 -- curl -s --connect-timeout 5 http://api-svc.lab03.svc.cluster.local
-# curl: (7) Failed to connect to api-svc port 80 after x ms: Connection refused
+kubectl run curl-test \
+  --image=curlimages/curl:latest \
+  -it \
+  --rm \
+  --restart=Never \
+  -n lab03 \
+  -- sh
+
+~ $ curl -v --connect-timeout 5 http://api-svc.lab03.svc.cluster.local
+
+* Host api-svc.lab03.svc.cluster.local:80 was resolved.
+* IPv4: 10.96.50.40
+*   Trying 10.96.50.40:80...
+* connect to 10.96.50.40 port 80 failed: Connection refused
+curl: (7) Failed to connect to api-svc.lab03.svc.cluster.local:80 after 1 ms: Could not connect to server
 ```
 
 `Connection refused` (not timeout) — this means the traffic reached the pod's IP but the port is closed.
