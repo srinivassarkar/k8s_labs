@@ -218,7 +218,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: slow-app-svc
-  namespace: lab03
+  namespace: lab04
 spec:
   selector:
     app: slow-app
@@ -236,7 +236,7 @@ kubectl get pods -n lab04 -w
 # slow-app-xxx-bbb   1/1     Running   0          5s   <-- same
 
 # Service already has these as Endpoints — traffic goes to them
-kubectl get endpoints slow-app-svc -n lab03
+kubectl get endpoints slow-app-svc -n lab04
 # ENDPOINTS: 10.244.x.x:80, 10.244.y.y:80  <-- but app isn't serving yet
 ```
 
@@ -293,7 +293,7 @@ kubectl get pod -n lab04 -l app=strict-readiness
 kubectl get pods -n lab04
 
 # Step 2 — Check Endpoints — is pod in or out of rotation?
-kubectl get endpoints slow-app-svc -n lab03
+kubectl get endpoints slow-app-svc -n lab04
 # Empty or populated tells you if pod is serving traffic
 
 # Step 3 — Describe to see readiness probe failures
