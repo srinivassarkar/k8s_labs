@@ -121,16 +121,20 @@ kubectl top pods -n lab05
 
 Note: `kubectl top` requires metrics-server. In KIND run:
 ```bash
+# 1. Install metrics-server (automatically goes to kube-system)
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 
-# KIND needs this patch for metrics-server to work
+# 2. Apply BOTH required patches for KIND (Insecure TLS + InternalIP routing)
 kubectl patch deployment metrics-server -n kube-system --type='json' \
-  -p='[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
+  -p='[
+    {"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"},
+    {"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-preferred-address-types=InternalIP"}
+  ]'
 
-# Wait for metrics-server to be ready
+# 3. Wait for the rollout to cleanly complete
 kubectl rollout status deployment metrics-server -n kube-system
 
-# Now top works
+# 4. (Optional) Give the metrics aggregator 15-30 seconds to scrape data, then run:
 kubectl top pods -n lab05
 ```
 
@@ -507,6 +511,35 @@ kubectl get pods -n lab05 \
 # 2. Burstable pods evicted next (sorted by how much they exceed their request)
 # 3. Guaranteed pods evicted last (only if node is critically out of memory)
 
+#3-step simulation to force and observe the QoS eviction order:
+# 1. Start the Live Watch Monitor
+
+# Open a dedicated terminal to track pod status transitions in real-time
+kubectl get pods -n lab05 -w
+
+# 2. Deploy the Memory Stressor Pod
+
+# Launch a container that requests 15GB of RAM to instantly exhaust the node's 5.78GB limit
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: oom-stressor
+  namespace: lab05
+spec:
+  restartPolicy: Never
+  containers:
+  - name: stress-container
+    image: polinux/stress-ng
+    command: ["stress-ng"]
+    args: ["--vm", "1", "--vm-bytes", "15G", "--vm-hang", "0"]
+EOF
+
+# 3. Verify the Eviction Results
+
+# Check the final termination state; 'besteffort' will drop first, followed by 'burstable'
+kubectl get pods -n lab05 -o custom-columns="NAME:.metadata.name,STATUS:.status.phase,REASON:.status.reason"
+
 # Check node eviction thresholds
 kubectl describe node kind-control-plane | grep -A 5 "eviction"
 
@@ -537,6 +570,7 @@ A namespace with no guardrails. Any pod can request unlimited resources, any tea
 ```bash
 # Create a fresh namespace for this scenario
 kubectl create namespace lab05-quota
+kubectl config set-context --current --namespace=lab05-quota
 
 # Deploy without any resource spec — accepted without complaint
 cat <<EOF | kubectl apply -f -
