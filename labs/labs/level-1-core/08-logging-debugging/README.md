@@ -73,12 +73,6 @@ LEVEL 5 — What does the cluster see?
 
 ---
 
-```bash
-# Create the lab namespace
-kubectl create namespace lab07
-kubectl config set-context --current --namespace=lab07
-```
-
 ## Scenario 01 — Multi-Container Pod — Logs From the Wrong Container
 
 ### What You'll Break
